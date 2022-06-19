@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect'
+import { useSelector } from 'react-redux'
 
 //init state
 const initialState = {
@@ -16,23 +17,28 @@ export default function postsReducer(state = initialState, action) {
             }
         }
         case 'posts/postsLoaded': {
-            const newEntities = {}
-            action.payload.forEach(todo => {
-                newEntities[todo.id] = todo
-            })
+            // const newEntities = {}
+            // action.payload.forEach(todo => {
+            //     newEntities[todo.id] = todo
+            // })
+            // return {
+            //     ...state,
+            //     status: 'idle',
+            //     entities: newEntities
+            // }
             return {
                 ...state,
                 status: 'idle',
-                entities: newEntities
+                entities: action.payload
             }
         }
         case 'posts/postAdded': {
-            
+            const post = action.payload
             return {
                 ...state,
                 entities: {
-                    ...state.entities
-                    ///////////////////
+                    ...state.entities,
+                    [post.id]: post
                 }
             }
         }
@@ -50,23 +56,34 @@ export const postsLoading = () => ({type: 'posts/postsLoading'})
 
 export const postsLoaded = (posts) => ({type: 'posts/postsLoaded', payload: posts})
 
+export const postAdded = (post) => ({type: 'posts/postAdded', payload: post})
+
 //thunk function
 export const fetchPosts = () => async dispatch => {
     dispatch(postsLoading())
     await fetch('https://postsapp-7d64f-default-rtdb.firebaseio.com/posts.json')
         .then(res => res.json())
-        .then(data => dispatch(postsLoaded(data)))
+        .then(data => {
+            console.log('data: ', data);
+            dispatch(postsLoaded(data))
+        })
 }
 
-export const saveNewPost = () => async () => {
+
+export const saveNewPost = (id, title, content) => async (dispatch, getSate) => {
+    const newPost = {id: id, title: title, content: content}
+    dispatch(postAdded(newPost))
+    const posts = getSate().posts.entities
+    console.log(posts);
     await fetch('https://postsapp-7d64f-default-rtdb.firebaseio.com/posts.json', {
         method: 'PUT',
-        body: JSON.stringify(data)
+        body: JSON.stringify(posts)
     })
+        
 }
 
 //selectors
-const selectPostEntities = state => state.posts.entities
+export const selectPostEntities = state => state.posts.entities
 
 export const selectPosts = createSelector(
     selectPostEntities,
