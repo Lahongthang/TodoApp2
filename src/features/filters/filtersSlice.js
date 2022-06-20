@@ -25,7 +25,6 @@ export default function filtersReducer(state = initialState, action) {
         switch (changeType) {
           case 'added': {
             if (colors.includes(color)) {
-              // This color already is set as a filter. Don't change the state.
               return state
             }
   

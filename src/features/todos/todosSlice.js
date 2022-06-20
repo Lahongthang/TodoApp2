@@ -148,7 +148,7 @@ export const fetchTodos = () => async (dispatch) => {
 
 export function updateTodos() {
     return async function updateTodoThunk(dispatch, getState) {
-        const newTodos = getState().todos.entities
+        const newTodos = getState().todos
         console.log('newtodos: ', newTodos)
         await fetch('https://todoappredux-ea537-default-rtdb.firebaseio.com/todos.json', {
             method: "PUT",
