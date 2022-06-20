@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import { selectTodos, updateTodos } from './features/todos/todosSlice'
+import { selectTodos, updateTodos, todosLoading, endLoading } from './features/todos/todosSlice'
 import Header from './features/header/Header'
 import TodoList from './features/todos/TodoList'
 import Footer from './features/footer/Footer'
@@ -13,11 +13,16 @@ function App() {
   const todos = useSelector(selectTodos)
 
   useEffect(() => {
+    const fetchUpdate = async () => {
+      dispatch(todosLoading())
+      await dispatch(updateTodos(todos))
+      dispatch(endLoading())
+    }
     if (isInitial < 2) {
       isInitial ++
       return
     }
-    dispatch(updateTodos(todos))
+    fetchUpdate()
   }, [todos])
 
   return (

@@ -10,7 +10,7 @@ const nextTodoId = todos => {
 
 const Header = () => {
   const [text, setText] = useState('')
-  const [status, setStatus] = useState('idle')
+  // const [status, setStatus] = useState('idle')
   const dispatch = useDispatch()
 
   const todos = useSelector(selectTodos)
@@ -27,21 +27,22 @@ const Header = () => {
     }
   }
 
-  let isLoading = status === 'loading'
-  let placeholder = isLoading ? '' : 'What needs to be done?'
-  let loader = isLoading ? <div className="loader" /> : null
+  // let isLoading = status === 'loading'
+  // let placeholder = isLoading ? '' : 'What needs to be done?'
+  // let loader = isLoading ? <div className="loader" /> : null
 
   return (
     <header className="header">
       <input
         className="new-todo"
-        placeholder={placeholder}
+        placeholder='What needs to be done?'
+        autoFocus={true}
         value={text}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        disabled={isLoading}
+        // disabled={isLoading}
       />
-      {loader}
+      {/* {loader} */}
     </header>
   )
 }
