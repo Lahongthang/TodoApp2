@@ -85,6 +85,12 @@ export default function todosReducer(state = initialState, action) {
                 status: 'loading'
             }
         }
+        case 'todos/endLoading': {
+            return {
+                ...state,
+                status: 'idle'
+            }
+        }
         case 'todos/todosLoaded': {
             // const newEntities = {}
             // console.log('load: ', action.payload)
@@ -107,6 +113,7 @@ export default function todosReducer(state = initialState, action) {
     }
 }
 
+//action creators
 export const todoAdded = (todo) => ({ type: 'todos/todoAdded', payload: todo })
 
 export const todoToggled = (todoId) => ({
@@ -129,6 +136,8 @@ export const allTodosCompleted = () => ({ type: 'todos/allCompleted' })
 export const completedTodosCleared = () => ({ type: 'todos/completedCleared' })
 
 export const todosLoading = () => ({ type: 'todos/todosLoading' })
+
+export const endLoading = () => ({type: 'todos/endLoading'})
 
 export const todosLoaded = (todos) => ({
     type: 'todos/todosLoaded',

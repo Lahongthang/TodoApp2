@@ -8,31 +8,31 @@
         "color": "",
         "completed": false,
         "id": 0,
-        "text": "aaa"
+        "text": "Learn React"
       },
       "1": {
         "color": "",
         "completed": false,
         "id": 1,
-        "text": "bbb"
+        "text": "Lean Redux"
       },
       "2": {
         "color": "",
         "completed": false,
         "id": 2,
-        "text": "ccc"
+        "text": "Read Book"
       },
       "3": {
         "color": "",
         "completed": false,
         "id": 3,
-        "text": "ddd"
+        "text": "Shopping"
       },
       "4": {
         "color": "",
         "completed": false,
         "id": 4,
-        "text": "eee"
+        "text": "Go To Sleep"
       }
     },
     "status": "idle"
