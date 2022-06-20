@@ -1,0 +1,40 @@
+{
+  "filters": {
+    "status": "all"
+  },
+  "todos": {
+    "entities": {
+      "0": {
+        "color": "",
+        "completed": false,
+        "id": 0,
+        "text": "aaa"
+      },
+      "1": {
+        "color": "",
+        "completed": false,
+        "id": 1,
+        "text": "bbb"
+      },
+      "2": {
+        "color": "",
+        "completed": false,
+        "id": 2,
+        "text": "ccc"
+      },
+      "3": {
+        "color": "",
+        "completed": false,
+        "id": 3,
+        "text": "ddd"
+      },
+      "4": {
+        "color": "",
+        "completed": false,
+        "id": 4,
+        "text": "eee"
+      }
+    },
+    "status": "idle"
+  }
+}

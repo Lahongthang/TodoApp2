@@ -6,30 +6,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import store from './store';
-import { fetchPosts } from './features/posts/postsSlice';
+import store from './store'
+import {fetchTodos} from './features/todos/todosSlice'
 
-store.dispatch(fetchPosts())
+store.dispatch(fetchTodos())
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-
-
-// async function fetchPosts() {
-//   await fetch('https://postsapp-7d64f-default-rtdb.firebaseio.com/posts.json')
-//     .then(res => res.json())
-//     .then(data => console.log(data))
-// }
-
-// fetchPosts()
