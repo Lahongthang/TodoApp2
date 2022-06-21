@@ -156,15 +156,23 @@ export const fetchTodos = () => async (dispatch) => {
 }
 
 // toggle completed
-export const toggleCompleted = (id, completed) => async dispatch => {
-    const response = await fetch(`http://localhost:8000/api/todos/${id}?completed=${completed}`, {
-        method: 'PUT'
-    })
+export const updateTodo = ({id, completed, color}) => async dispatch => {
+    let url
+    let action
+    if (completed !== undefined) {
+        url = `http://localhost:8000/api/todos/${id}?completed=${!completed}`
+        action = todoToggled(id)
+    } else if (color !== undefined) {
+        url = `http://localhost:8000/api/todos/${id}?color=${color}`
+        action = todoColorSelected(id, color)
+    }
+
+    const response = await fetch(url, {method: 'PUT'})
     if (!response.ok) {
         throw new Error('toggle faild!')
     }
     console.log('success');
-    dispatch(todoToggled(id))
+    dispatch(action)
 }
 
 
