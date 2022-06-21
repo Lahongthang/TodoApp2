@@ -92,16 +92,6 @@ export default function todosReducer(state = initialState, action) {
             }
         }
         case 'todos/todosLoaded': {
-            // const newEntities = {}
-            // console.log('load: ', action.payload)
-            // action.payload.forEach((todo) => {
-            //     newEntities[todo.id] = todo
-            // })
-            // return {
-            //     ...state,
-            //     status: 'idle',
-            //     entities: newEntities
-            // }
             return {
                 ...state,
                 status: 'idle',

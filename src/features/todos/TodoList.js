@@ -11,19 +11,22 @@ const TodoList = () => {
     const todoIds = useSelector(selectFilteredTodoIds)
     const loadingStatus = useSelector((state) => state.todos.status)
 
-    if (loadingStatus === 'loading') {
-        return (
-        <div className="todo-list">
+    const loader = (
+        <div>
             <div className="loader" />
         </div>
-        )
-    }
-
+    )
+    
     const renderedListItems = todoIds.map((todoId) => {
         return <TodoListItem key={todoId} id={todoId} />
     })
 
-    return <ul className="todo-list">{renderedListItems}</ul>
+    return (
+        <>
+            <ul className="todo-list">{renderedListItems}</ul>
+            {loadingStatus === 'loading' && loader}
+        </>
+    )
 }
 
 export default TodoList

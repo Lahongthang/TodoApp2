@@ -101,7 +101,7 @@ button:disabled:hover {
 /* https://projects.lukehaas.me/css-loaders/ , Loader #3 */
 .loader {
   font-size: 10px;
-  margin: 50px auto;
+  margin: 0px auto;
   text-indent: -9999em;
   width: 5em;
   height: 5em;
@@ -308,7 +308,7 @@ main h2 {
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 400px;
+  height: 300px;
   max-height: 400px;
   overflow-y: auto;
 }
