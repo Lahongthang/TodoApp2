@@ -17,8 +17,11 @@ export default function todosReducer(state = initialState, action) {
             return {
                 ...state,
                 entities: {
-                ...state.entities,
-                [todo.id]: todo
+                    ...state.entities,
+                    data: [
+                        ...state.entities.data,
+                        todo
+                    ]
                 }
             }
         }
@@ -61,36 +64,37 @@ export default function todosReducer(state = initialState, action) {
             }
         }
         case 'todos/todoDeleted': {
-            const newEntities = { ...state.entities }
-            delete newEntities[action.payload]
             return {
                 ...state,
-                entities: newEntities
+                entities: {
+                    ...state.entities,
+                    data: state.entities.data.filter(todo => {
+                        todo.id !== action.payload
+                    })
+                }
             }
         }
         case 'todos/allCompleted': {
-            const newEntities = { ...state.entities }
-            Object.values(newEntities).forEach((todo) => {
-                newEntities[todo.id] = {
-                ...todo,
-                completed: true
-                }
-            })
             return {
                 ...state,
-                entities: newEntities
+                entities: {
+                    ...state.entities,
+                    data: state.entities.data.map(todo => {
+                        return {
+                            ...todo,
+                            completed: true
+                        }
+                    })
+                }
             }
         }
         case 'todos/completedCleared': {
-            const newEntities = { ...state.entities }
-            Object.values(newEntities).forEach((todo) => {
-                if (todo.completed) {
-                delete newEntities[todo.id]
-                }
-            })
             return {
                 ...state,
-                entities: newEntities
+                entities: {
+                    ...state.entities,
+                    data: state.entities.data.filter(todo => !todo.completed)
+                }
             }
         }
         case 'todos/todosLoading': {
