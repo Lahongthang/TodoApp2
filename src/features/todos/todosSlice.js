@@ -161,7 +161,7 @@ export const fetchTodos = () => async (dispatch) => {
         })
 }
 
-// toggle completed
+// update todo
 export const updateTodo = ({id, completed, color}) => async dispatch => {
     let url
     let action

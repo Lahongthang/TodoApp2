@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import { todoAdded } from '../todos/todosSlice'
 
 const nextTodoId = todos => {
@@ -9,6 +8,11 @@ const nextTodoId = todos => {
 }
 
 const Header = () => {
+  const [text, setText] = useState('')
+
+  const handleChanged = (e) => {
+    setText(e.target.value)
+  }
 
   return (
     <header className="header">
@@ -16,6 +20,8 @@ const Header = () => {
         className="new-todo"
         placeholder='What needs to be done?'
         autoFocus={true}
+        value={text}
+        onChange={handleChanged}
       />
     </header>
   )
