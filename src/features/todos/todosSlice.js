@@ -3,7 +3,11 @@ import { StatusFilters } from '../filters/filtersSlice'
 
 const initialState = {
     status: 'idle',
-    entities: {},
+    entities: {
+        data: [],
+        links: {},
+        meta: {}
+    }
 }
 
 export default function todosReducer(state = initialState, action) {
@@ -20,15 +24,19 @@ export default function todosReducer(state = initialState, action) {
         }
         case 'todos/todoToggled': {
             const todoId = action.payload
-            const todo = state.entities[todoId]
             return {
                 ...state,
                 entities: {
-                ...state.entities,
-                [todoId]: {
-                    ...todo,
-                    completed: !todo.completed
-                }
+                    ...state.entities,
+                    data: state.entities.data.map(todo => {
+                        if (todo.id !== todoId) {
+                            return todo
+                        }
+                        return {
+                            ...todo,
+                            completed: !todo.completed
+                        }
+                    })
                 }
             }
         }
@@ -135,64 +143,45 @@ export const todosLoaded = (todos) => ({
 })
 
 // Thunk function
+
+// get all
 export const fetchTodos = () => async (dispatch) => {
     dispatch(todosLoading())
-    await fetch('https://todoappredux-ea537-default-rtdb.firebaseio.com/todos.json')
+    await fetch('http://localhost:8000/api/todos')
         .then(response => response.json())
-        .then(data => {
-            console.log('data: ', data.entities)
-            dispatch(todosLoaded(data.entities))
+        .then(result => {
+            console.log('result: ', result)
+            dispatch(todosLoaded(result))
         })
 }
 
-export function updateTodos() {
-    return async function updateTodoThunk(dispatch, getState) {
-        const newTodos = getState().todos
-        console.log('newtodos: ', newTodos)
-        await fetch('https://todoappredux-ea537-default-rtdb.firebaseio.com/todos.json', {
-            method: "PUT",
-            body: JSON.stringify(newTodos)
-        })
+// toggle completed
+export const toggleCompleted = (id, completed) => async dispatch => {
+    const response = await fetch(`http://localhost:8000/api/todos/${id}?completed=${completed}`, {
+        method: 'PUT'
+    })
+    if (!response.ok) {
+        throw new Error('toggle faild!')
     }
+    console.log('success');
+    dispatch(todoToggled(id))
 }
 
-const selectTodoEntities = (state) => state.todos.entities
+
+//selectors
+const selectEntities = state => state.entities
 
 export const selectTodos = createSelector(
-    selectTodoEntities,
-    (entities) => Object.values(entities)
+    selectEntities,
+    entities => entities.data
 )
-
-export const selectTodoById = (state, todoId) => {
-    return selectTodoEntities(state)[todoId]
-}
 
 export const selectTodoIds = createSelector(
     selectTodos,
-    (todos) => todos.map((todo) => todo.id)
+    todos => todos.map(todo => todo.id)
 )
 
-export const selectFilteredTodos = createSelector(
+export const selectTodoById = todoId => createSelector(
     selectTodos,
-    (state) => state.filters,
-    (todos, filters) => {
-        const { status, colors } = filters
-        const showAllCompletions = status === StatusFilters.All
-        if (showAllCompletions && colors.length === 0) {
-        return todos
-        }
-
-        const completedStatus = status === StatusFilters.Completed
-        return todos.filter((todo) => {
-        const statusMatches =
-            showAllCompletions || todo.completed === completedStatus
-        const colorMatches = colors.length === 0 || colors.includes(todo.color)
-        return statusMatches && colorMatches
-        })
-    }
-)
-
-export const selectFilteredTodoIds = createSelector(
-    selectFilteredTodos,
-    (filteredTodos) => filteredTodos.map((todo) => todo.id)
+    todos => todos.find(todo => todo.id === todoId)
 )
