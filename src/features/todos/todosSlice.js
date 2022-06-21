@@ -42,15 +42,21 @@ export default function todosReducer(state = initialState, action) {
         }
         case 'todos/colorSelected': {
             const { color, todoId } = action.payload
-            const todo = state.entities[todoId]
             return {
                 ...state,
                 entities: {
-                ...state.entities,
-                [todoId]: {
-                    ...todo,
-                    color
-                }
+                    ...state.entities,
+                    data: state.entities.data.map(todo => {
+                        if (todo.id !== todoId) {
+                            return todo
+                        }
+                        return {
+                            ...todo,
+                            color: {
+                                name: color
+                            }
+                        }
+                    })
                 }
             }
         }
